@@ -1,18 +1,6 @@
 import Ember from 'ember';
-
-let Band = Ember.Object.extend({
-    name: '',
-
-    slug: Ember.computed('name', function() {
-        return this.get('name').dasherize();
-    })
-});
-
-let Song = Ember.Object.extend({
-    title: '',
-    rating: 0,
-    band: ''
-});
+import Band from '../models/band';
+import Song from '../models/song';
 
 let blackDog = Song.create({
     title: 'Black Dog',
@@ -47,7 +35,16 @@ let bands = BandsCollection.create();
 bands.get('content').pushObjects([ledZeppelin, pearlJam, fooFighters]);
 
 export default Ember.Route.extend({
-    model: () =>
-        bands
+    model: function() {
+        return bands;
+    },
 
+    actions: {
+        createBand: function() {
+            let name = this.get('controller').get('name');
+            let band = Band.create({ name: name });
+            bands.get('content').pushObject(band);
+            this.get('controller').set('name', '');
+        }
+    }
 });
