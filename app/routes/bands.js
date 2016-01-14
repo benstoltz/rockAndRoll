@@ -45,6 +45,7 @@ export default Ember.Route.extend({
             let band = Band.create({ name: name });
             bands.get('content').pushObject(band);
             this.get('controller').set('name', '');
+            this.transitionTo('bands.band.songs', band);
         }
     }
 });
